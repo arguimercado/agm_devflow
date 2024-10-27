@@ -30,17 +30,21 @@ const config: Config = {
           300: "#151821",
           200: "#151821",
           100: "#0000",
-       
         },
       },
       spacing: {},
-      baxShadow: {
-        
-      },
+      baxShadow: {},
       screens: {
-        "xs":"420px",
-        
-      }
+        xs: "420px",
+      },
+      fontFamily: {
+        inter: ["var(--font-inter)", "Inter", "sans-serif"],
+        "space-grotesk": [
+          "var(--font-space-grotesk)",
+          "Space Grotesk",
+          "sans-serif",
+        ],
+      },
     },
   },
   plugins: [],
