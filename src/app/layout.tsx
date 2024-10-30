@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import React from "react";
 import "./globals.css";
+
 import { ThemeProvider } from "next-themes";
 
 import { auth } from "@/auth";
@@ -38,10 +39,10 @@ const RootLayout = async ({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <SessionProvider session={session}>
-        <body
-          className={`${inter.className} ${spaceGrotesk.variable} antialiased`}
-        >
+      <body
+        className={`${inter.className} ${spaceGrotesk.variable} antialiased`}
+      >
+        <SessionProvider session={session}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -51,8 +52,8 @@ const RootLayout = async ({
             {children}
             <Toaster />
           </ThemeProvider>
-        </body>
-      </SessionProvider>
+        </SessionProvider>
+      </body>
     </html>
   );
 };
