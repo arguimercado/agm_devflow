@@ -6,7 +6,7 @@ import React from "react";
 import ROUTES from "@/contstants/route";
 import { toast } from "@/hooks/use-toast";
 
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 const SocialAuthForm = () => {
   const handleSignIn = async (provider: "github" | "google") => {
