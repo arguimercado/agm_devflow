@@ -6,7 +6,6 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 
 import { auth } from "@/auth";
-import Navbar from "@/components/navigation/navbar";
 import { Toaster } from "@/components/ui/toaster";
 
 import { SessionProvider } from "next-auth/react";
@@ -39,6 +38,13 @@ const RootLayout = async ({
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+        />
+      </head>
       <body
         className={`${inter.className} ${spaceGrotesk.variable} antialiased`}
       >

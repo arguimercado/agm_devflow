@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/sheet";
 import ROUTES from "@/contstants/route";
 
+import NavLinks from "./NavLinks";
+
 const MobileNavigation = () => {
   return (
     <Sheet>
@@ -38,7 +40,7 @@ const MobileNavigation = () => {
         <div className="no-scrollbar flex h-[calc(100vh-80px)] flex-col justify-between overflow-y-auto">
           <SheetClose asChild>
             <section className="flex h-full flex-col gap-6 pt-16">
-              <p>Nav Links</p>
+              <NavLinks isMobileNav />
             </section>
           </SheetClose>
 
@@ -51,7 +53,7 @@ const MobileNavigation = () => {
               </Link>
             </SheetClose>
             <SheetClose asChild>
-              <Link href={ROUTES.SIGNIN}>
+              <Link href={ROUTES.SIGNUP}>
                 <Button className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg shadow-none">
                   <span>Sign Up</span>
                 </Button>
