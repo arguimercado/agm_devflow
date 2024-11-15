@@ -25,6 +25,7 @@ const menu = [
 ];
 
 const LeftSidebar = () => {
+  
   const selectedPath = usePathname();
 
   console.log(selectedPath);
