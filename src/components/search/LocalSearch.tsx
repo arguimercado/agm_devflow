@@ -1,7 +1,9 @@
 "use client";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { use, useEffect, useState } from "react";
+
+import { formUrlQuery, removeKeysFromUrlQuery } from "@/lib/url";
 
 import { Input } from "../ui/input";
 
@@ -18,10 +20,37 @@ const LocalSearch = ({
   baseClassName,
   route,
 }: SearchProps) => {
+  const pathname = usePathname();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
 
   const [searchQuery, setSearchQuery] = useState(query);
+
+  useEffect(() => {
+    const debounceFn = setTimeout(() => {
+      if (searchQuery) {
+        const newUrl = formUrlQuery({
+          params: searchParams.toString(),
+          key: "query",
+          value: searchQuery,
+        });
+
+        router.push(newUrl, { scroll: false });
+      } else {
+        if (pathname === route) {
+          const newUrl = removeKeysFromUrlQuery({
+            params: searchParams.toString(),
+            keysToRemove: ["query"],
+          });
+
+          router.push(newUrl, { scroll: false });
+        }
+      }
+    }, 1000);
+
+    return () => clearTimeout(debounceFn);
+  }, [searchQuery, router, route, searchParams, pathname]);
 
   return (
     <div
@@ -34,6 +63,7 @@ const LocalSearch = ({
         height={20}
         className="cursor-pointer"
       />
+
       <Input
         type="text"
         placeholder={placeholder}
