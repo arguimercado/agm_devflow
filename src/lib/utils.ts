@@ -15,6 +15,31 @@ export const getDevIconClassName = (techName: string) => {
     ? `${techMap[normalizedTechName]} colored`
     : "devicon-devicon-plain";
 };
+export const getTimeStamp = (date: Date) => {
+  const now = new Date();
+  
+  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  const intervals = [
+    { name: "year", value: 31536000 },
+    { name: "month", value: 2592000 },
+    { name: "week", value: 604800 },
+    { name: "day", value: 86400 },
+    { name: "hour", value: 3600 },
+    { name: "minute", value: 60 },
+    { name: "second", value: 1 },
+  ];
+
+  for (const interval of intervals) {
+    const value = Math.floor(seconds / interval.value);
+    if (value >= 1) {
+      return `${value} ${interval.name}${value > 1 ? "s" : ""} ago`;
+    }
+  }
+
+  return "just now";
+};
+
 export const updateSearchParams = (key: string, value: string) => {
   // Get the current search params
   const searchParams = new URLSearchParams(window.location.search);

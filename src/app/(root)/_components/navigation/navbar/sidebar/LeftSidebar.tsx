@@ -25,7 +25,6 @@ const menu = [
 ];
 
 const LeftSidebar = () => {
-  
   const selectedPath = usePathname();
 
   console.log(selectedPath);
@@ -56,23 +55,21 @@ const LeftSidebar = () => {
                 </span>
               </Link>
             </Button>
-            <Link href={ROUTES.SIGNIN}>
-              <Button
-                className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg shadow-none"
-                asChild
-              >
-                <Link href={ROUTES.SIGNUP} className="flex items-center gap-2">
-                  <Image
-                    src="/icons/sign-up.svg"
-                    alt="signup"
-                    width={20}
-                    height={20}
-                    className="invert-colors lg:hidden"
-                  />
-                  <span className="max-lg:hidden">Sign Up</span>
-                </Link>
-              </Button>
-            </Link>
+            <Button
+              className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg shadow-none"
+              asChild
+            >
+              <Link href={ROUTES.SIGNUP} className="flex items-center gap-2">
+                <Image
+                  src="/icons/sign-up.svg"
+                  alt="signup"
+                  width={20}
+                  height={20}
+                  className="invert-colors lg:hidden"
+                />
+                <span className="max-lg:hidden">Sign Up</span>
+              </Link>
+            </Button>
           </div>
         </div>
       </div>

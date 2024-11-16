@@ -9,13 +9,12 @@ import { Badge } from "../ui/badge";
 interface IProps {
   _id: string;
   name: string;
-  questions: number;
+  questions?: number;
   showCount?: boolean;
   compact?: boolean;
 }
 
 const TagCard = ({ _id, name, questions, showCount, compact }: IProps) => {
-  
   const iconClassName = getDevIconClassName(name);
 
   return (
