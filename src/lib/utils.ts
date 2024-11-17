@@ -9,7 +9,6 @@ export function cn(...inputs: ClassValue[]) {
 
 export const getDevIconClassName = (techName: string) => {
   const normalizedTechName = techName.replace(/[.]/g, "").toLowerCase();
-  console.log(normalizedTechName);
 
   return techMap[normalizedTechName]
     ? `${techMap[normalizedTechName]} colored`
@@ -17,7 +16,7 @@ export const getDevIconClassName = (techName: string) => {
 };
 export const getTimeStamp = (date: Date) => {
   const now = new Date();
-  
+
   const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
   const intervals = [

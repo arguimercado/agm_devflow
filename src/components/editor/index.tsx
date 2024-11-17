@@ -46,14 +46,14 @@ const Editor = ({ value, editorRef, fieldChange, ...props }: Props) => {
   const { resolvedTheme } = useTheme();
 
   const theme = resolvedTheme === "dark" ? [basicDark] : [];
-  console.log(theme);
+
   return (
     <MDXEditor
       key={resolvedTheme}
       markdown={value}
       ref={editorRef}
       onChange={fieldChange}
-      className="background-light800_dark200 light-border-2 markdown-editor  w-full border"
+      className="background-light800_dark200 light-border-2 markdown-editor dark-editor grid w-full border"
       plugins={[
         headingsPlugin(),
         listsPlugin(),
