@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import AskQuestion from "@/app/(root)/ask-question/page";
+
 export const SignInSchema = z.object({
   email: z
     .string()
@@ -47,4 +49,18 @@ export const SignUpSchema = z.object({
     .regex(/[^a-zA-Z0-9]/, {
       message: "Password must contain at least one special character.",
     }),
+});
+
+export const AskQuestionSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "Title is required." })
+    .max(100, { message: "Title cannot exceed 100 characters." }),
+
+  content: z.string().min(1, { message: "Content is required." }),
+
+  tags: z
+    .array(z.string())
+    .min(1, { message: "Please add at least one tag." })
+    .max(3, { message: "You can add at most 3 tags." }),
 });
