@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-import { sidebarLinks } from "@/contstants";
+import { sidebarLinks } from "../../../../../constants";
 import { cn } from "@/lib/utils";
 
 const NavLinks = ({ isMobileNav = false }: { isMobileNav: boolean }) => {

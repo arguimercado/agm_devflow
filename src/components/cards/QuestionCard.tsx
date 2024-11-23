@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-import ROUTES from "@/contstants/route";
+import ROUTES from "@/constants/route";
 import { getTimeStamp } from "@/lib/utils";
 import { QuestionProps, TagProps } from "@/types/global";
 

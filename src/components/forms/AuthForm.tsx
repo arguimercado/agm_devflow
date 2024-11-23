@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import ROUTES from "@/contstants/route";
+import ROUTES from "@/constants/route";
 import { ConvertAuthLabel } from "@/lib/helper";
 
 interface AuthFormProps<T extends FieldValues> {

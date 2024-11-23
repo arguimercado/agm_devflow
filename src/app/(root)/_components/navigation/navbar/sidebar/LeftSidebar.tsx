@@ -7,29 +7,17 @@ import { usePathname } from "next/navigation";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
-import ROUTES from "@/contstants/route";
+import ROUTES from "@/constants/route";
 
 import NavLinks from "../NavLinks";
 
-const menu = [
-  {
-    title: "Home",
-    url: "/",
-    icon: "/icons/home.svg",
-  },
-  {
-    title: "Community",
-    url: "/community",
-    icon: "/icons/users.svg",
-  },
-];
 
 const LeftSidebar = () => {
   const selectedPath = usePathname();
 
   return (
     <section className="background-light900_dark200 custom-scrollbar">
-      <div className="light-border sticky left-0 top-0 flex h-screen flex-1 flex-col justify-between gap-6 overflow-y-auto border-r p-6 pt-36 shadow-light-400 dark:shadow-none max-sm:hidden lg:w-[266px]">
+      <div className="light-border sticky left-0 top-0 flex h-screen custom-scrollbar flex-1 flex-col justify-between gap-6 overflow-y-auto border-r p-6 pt-36 shadow-light-400 dark:shadow-none max-sm:hidden lg:w-[266px]">
         <div className="flex flex-1 flex-col gap-6">
           <NavLinks isMobileNav={false} />
         </div>

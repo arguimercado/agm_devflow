@@ -5,7 +5,7 @@ import Link from "next/link";
 import React from "react";
 
 import TagCard from "@/components/cards/TagCard";
-import ROUTES from "@/contstants/route";
+import ROUTES from "@/constants/route";
 
 const hotQuestions = [
   {

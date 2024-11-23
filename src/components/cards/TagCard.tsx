@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-import ROUTES from "@/contstants/route";
+import ROUTES from "@/constants/route";
 import { getDevIconClassName } from "@/lib/utils";
 
 import { Badge } from "../ui/badge";
