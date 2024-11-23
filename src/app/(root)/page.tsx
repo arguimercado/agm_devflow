@@ -4,18 +4,29 @@ import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilter from "@/components/filter/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
-import {questions} from "@/constants/data";
 import ROUTES from "@/constants/route";
+import { QuestionProps } from "@/types/global";
+import {questions} from "@/constants/data";
+import handleError from "@/lib/handlers/error";
+import dbConnect from "@/lib/mongoose";
 
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
+const test = async () => {
+    try {
+        await dbConnect();
+    }catch(error) {
+        return handleError(error,'server');
+    }
+}
 
 const Home = async ({ searchParams }: SearchParams) => {
 
-
+    const result = await test();
+    console.log(result);
     const { query = "", filter = "" } = await searchParams;
 
   const filteredQuestions = questions.filter(({ title, tags }) => {
