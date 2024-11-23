@@ -4,18 +4,19 @@ import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilter from "@/components/filter/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
-import ROUTES from "@/constants/route";
-import { QuestionProps } from "@/types/global";
 import {questions} from "@/constants/data";
+import ROUTES from "@/constants/route";
 
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
+
 const Home = async ({ searchParams }: SearchParams) => {
 
-  const { query = "", filter = "" } = await searchParams;
+
+    const { query = "", filter = "" } = await searchParams;
 
   const filteredQuestions = questions.filter(({ title, tags }) => {
     const matchesQuery = title.toLowerCase().includes(query.toLowerCase());
