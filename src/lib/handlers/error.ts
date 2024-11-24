@@ -24,6 +24,7 @@ const formatResponse = (
 
 // @ts-ignore
 const handleError = (error: uknown, responseType: ResponseType) => {
+
     if(error instanceof RequestError) {
         logger.error({err: error},`${responseType.toUpperCase()} ERROR ${error.message}`);
         return formatResponse(responseType,error.statusCode,error.message,error.errors);
