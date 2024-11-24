@@ -44,7 +44,8 @@ export async function POST(request: Request) {
     const newUser = await User.create(validatedData.data);
 
     return NextResponse.json({ success: true, data: newUser }, { status: 201 });
-  } catch (error) {
+  } 
+  catch (error) {
     return handleError(error, "api") as APIErrorResponse;
   }
 }

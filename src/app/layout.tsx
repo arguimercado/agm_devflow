@@ -39,7 +39,6 @@ const RootLayout = async ({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-
         <link
           rel="stylesheet"
           type="text/css"
