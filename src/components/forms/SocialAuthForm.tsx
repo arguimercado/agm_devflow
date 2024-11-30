@@ -9,6 +9,7 @@ import { toast } from "@/hooks/use-toast";
 import { Button } from "../ui/button";
 
 const SocialAuthForm = () => {
+  
   const handleSignIn = async (provider: "github" | "google") => {
     try {
       // Call the API to sign in with the provider
