@@ -1,6 +1,6 @@
+import Credentials from "@auth/core/providers/credentials";
 import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 
@@ -15,37 +15,39 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     GitHub,
     Google,
     Credentials({
-      authorize: async ({ credentials }) => {
+      name: "credentials",
+
+      authorize: async (credentials) => {
         const validatedFields = SignInSchema.safeParse(credentials);
 
         if (validatedFields.success) {
           const { email, password } = validatedFields.data;
 
-          const { data: existingAccount } = (await api.accounts.getByProvider(
-            "credentials"
-          )) as ActionResponse<IAccountDoc>;
-
-          if (!existingAccount) return null;
-
-          const { data: existingUser } = (await api.users.getById(
-            existingAccount.userId.toString()
-          )) as ActionResponse<IUserDoc>;
-
-          if (!existingUser) return null;
-
-          const isValidPassword = await bcrypt.compare(
-            password,
-            existingAccount.password!
+          const { data: existingAccount } = await api.accounts.getByProvider(
+            email.toString()
           );
 
-          if (isValidPassword) {
-            return {
-              id: existingUser.id,
-              name: existingUser.name,
-              email: existingUser.email,
-              image: existingUser.image,
-            };
-          }
+          // if (!existingAccount) return null;
+
+          // const { data: existingUser } = (await api.users.getById(
+          //   existingAccount.userId.toString()
+          // )) as ActionResponse<IUserDoc>;
+
+          // if (!existingUser) return null;
+
+          // const isValidPassword = await bcrypt.compare(
+          //   password,
+          //   existingAccount.password!
+          // );
+
+          // if (isValidPassword) {
+          //   return {
+          //     id: existingAccount.userId.toString(),
+          //     name: existingUser.name,
+          //     email: existingUser.email,
+          //     image: existingUser.image,
+          //   };
+          // }
         }
         return null;
       },
@@ -100,3 +102,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
 });
+function CredentialsProvider(arg0: {
+  name: string;
+  authorize: ({ credentials }: { credentials: any }) => Promise<{
+    id: string;
+    name: string;
+    email: string;
+    image: string | undefined;
+  } | null>;
+}): import("@auth/core/providers").Provider {
+  throw new Error("Function not implemented.");
+}

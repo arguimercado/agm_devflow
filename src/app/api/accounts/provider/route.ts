@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import User from "@/database/user.model";
+import Account from "@/database/account.model";
 import handleError from "@/lib/handlers/error";
 import { NotFoundError, ValidationError } from "@/lib/https-errors";
 import dbConnect from "@/lib/mongoose";
@@ -9,7 +9,7 @@ import { APIErrorResponse } from "@/types/global";
 
 export async function POST(request: Request) {
   const { providerAccountId } = await request.json();
-
+  console.log(`providerAccount: ${providerAccountId}`);
   try {
     const validatedData = AccountSchema.partial().safeParse({
       providerAccountId,
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       throw new ValidationError(validatedData.error.flatten().fieldErrors);
     }
     await dbConnect();
-    const account = await User.findOne({ providerAccountId });
+    const account = await Account.findOne({ providerAccountId });
     if (!account) {
       throw new NotFoundError("Account");
     }

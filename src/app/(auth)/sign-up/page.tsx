@@ -2,7 +2,10 @@
 import React from "react";
 
 import AuthForm from "@/components/forms/AuthForm";
-import { SignUpWithCredentials } from "@/lib/actions/auth.action";
+import {
+  SignUpWithCredentials,
+  SignUpWithCredentials2,
+} from "@/lib/actions/auth.action";
 import { SignUpSchema } from "@/lib/validation";
 
 const SignUp = () => {
@@ -11,7 +14,7 @@ const SignUp = () => {
       formType="SIGN_UP"
       schema={SignUpSchema}
       defaultValues={{ email: "", password: "", name: "", username: "" }}
-      onSubmit={SignUpWithCredentials}
+      onSubmit={SignUpWithCredentials2}
     />
   );
 };

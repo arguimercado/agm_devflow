@@ -1,3 +1,5 @@
+import { config } from "process";
+
 import { ActionResponse } from "@/types/global";
 
 import logger from "../logger";
@@ -39,6 +41,7 @@ export async function fetchHandler<T>(
   };
 
   try {
+    console.log(url);
     const response = await fetch(url, config);
 
     clearTimeout(id);

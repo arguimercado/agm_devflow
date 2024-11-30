@@ -76,3 +76,23 @@ async function checkUserExists(
     );
   }
 }
+
+export async function SignUpWithCredentials2(
+  params: AuthCredentials
+): Promise<ActionResponse> {
+  const validationResult = await action({ params, schema: SignUpSchema });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const { name, username, email, password } = validationResult.params!;
+
+  try {
+    await signIn("credentials", { email, password, redirect: false });
+
+    return { success: true };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}

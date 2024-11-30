@@ -41,7 +41,7 @@ const QuestionForm = () => {
   });
 
   const handleCreateQuestion = (data: z.infer<typeof AskQuestionSchema>) => {
-    console.log(data);
+    // console.log(data);
   };
 
   const handleInputKeyDown = (
