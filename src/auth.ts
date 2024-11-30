@@ -33,16 +33,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn({ user, profile, account }) {
       if (account?.type === "credentials") return true;
 
-      if (!account || user) return false;
-      
+      if (!account || !user) return false;
+
       const userInfo = {
         name: user.name!,
         email: user.email!,
         image: user.image!,
-        username:
-          account.provider === "github"
-            ? (profile?.login as string)
-            : (user.name?.toLowerCase() as string),
+        username: (account.provider === "github"
+          ? profile?.login || ""
+          : user.name?.toLowerCase() || "") as string,
       };
 
       const { success } = (await api.auth.oAuthSignIn({
@@ -50,6 +49,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         provider: account.provider as "github" | "google",
         providerAccountId: account.providerAccountId as string,
       })) as ActionResponse;
+      console.log(`success: ${success}`);
 
       if (!success) return false;
 
