@@ -9,7 +9,7 @@ import { APIErrorResponse } from "@/types/global";
 
 export async function POST(request: Request) {
   const { email } = await request.json();
-  console.log(`email: ${email}`);
+
   try {
     const validatedData = UserSchema.partial().safeParse({ email });
 

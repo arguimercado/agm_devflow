@@ -1,4 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PhilDev Stack
+
+An serverless application created in Nextjs that lets junior developer solve it's problem by listing out their problem and let the community help to solve their problems.
+
+## Key Feature
+
+- Authentication with Social media
+- Published Question or Issue
+- Tags to immediately find issue
+
+## Tech Stack
+
+- NextJs 15
+- monggo db
+- mongoose
+
+## Model
+
+- User Model
+- Account Model
+- Quesion Model
+- Tags Model
 
 ## Getting Started
 

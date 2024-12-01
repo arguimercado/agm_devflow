@@ -15,8 +15,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     GitHub,
     Google,
     Credentials({
-      name: "credentials",
-
       authorize: async (credentials) => {
         const validatedFields = SignInSchema.safeParse(credentials);
         if (validatedFields.success) {
@@ -40,7 +38,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           if (isValidPassword) {
             return {
-              id: existingUser.id,
               name: existingUser.name,
               email: existingUser.email,
               image: existingUser.image,
@@ -93,7 +90,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         provider: account.provider as "github" | "google",
         providerAccountId: account.providerAccountId as string,
       })) as ActionResponse;
-      console.log(`success: ${success}`);
 
       if (!success) return false;
 
@@ -101,14 +97,3 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
 });
-function CredentialsProvider(arg0: {
-  name: string;
-  authorize: ({ credentials }: { credentials: any }) => Promise<{
-    id: string;
-    name: string;
-    email: string;
-    image: string | undefined;
-  } | null>;
-}): import("@auth/core/providers").Provider {
-  throw new Error("Function not implemented.");
-}

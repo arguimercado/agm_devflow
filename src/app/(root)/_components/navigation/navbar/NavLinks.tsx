@@ -8,9 +8,14 @@ import { cn } from "@/lib/utils";
 
 import { sidebarLinks } from "../../../../../constants";
 
-const NavLinks = ({ isMobileNav = false }: { isMobileNav: boolean }) => {
+const NavLinks = ({
+  isMobileNav = false,
+  userId,
+}: {
+  isMobileNav: boolean;
+  userId?: string;
+}) => {
   const currentPath = usePathname();
-  const userId = 1;
 
   return (
     <>
