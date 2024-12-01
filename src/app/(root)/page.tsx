@@ -16,16 +16,16 @@ interface SearchParams {
 
 const test = async () => {
   try {
-    return await api.users.getAll();
+    return await api.accounts.getByProvider("arnold.mercado@hotmail.com");
   } catch (error) {
     return handleError(error, "server");
   }
 };
 
 const Home = async ({ searchParams }: SearchParams) => {
-  const session = await auth();
+  const session = await test();
+  console.log(session);
 
- 
   const { query = "", filter = "" } = await searchParams;
 
   const filteredQuestions = questions.filter(({ title, tags }) => {

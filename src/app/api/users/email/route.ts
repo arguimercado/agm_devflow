@@ -9,7 +9,7 @@ import { APIErrorResponse } from "@/types/global";
 
 export async function POST(request: Request) {
   const { email } = await request.json();
-
+  console.log(`email: ${email}`);
   try {
     const validatedData = UserSchema.partial().safeParse({ email });
 
@@ -17,6 +17,7 @@ export async function POST(request: Request) {
       throw new ValidationError(validatedData.error.flatten().fieldErrors);
     }
     await dbConnect();
+
     const user = await User.findOne({ email });
     if (!user) {
       throw new NotFoundError("User");

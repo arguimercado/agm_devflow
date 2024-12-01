@@ -1,3 +1,4 @@
+"use server";
 import { Session } from "next-auth";
 import { ZodError, ZodSchema } from "zod";
 

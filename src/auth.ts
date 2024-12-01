@@ -19,36 +19,35 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       authorize: async (credentials) => {
         const validatedFields = SignInSchema.safeParse(credentials);
-
         if (validatedFields.success) {
           const { email, password } = validatedFields.data;
+          const { data: existingAccount } = (await api.accounts.getByProvider(
+            email
+          )) as ActionResponse<IAccountDoc>;
 
-          const { data: existingAccount } = await api.accounts.getByProvider(
-            email.toString()
+          if (!existingAccount) return null;
+
+          const { data: existingUser } = (await api.users.getById(
+            existingAccount.userId.toString()
+          )) as ActionResponse<IUserDoc>;
+
+          if (!existingUser) return null;
+
+          const isValidPassword = await bcrypt.compare(
+            password,
+            existingAccount.password!
           );
 
-          // if (!existingAccount) return null;
-
-          // const { data: existingUser } = (await api.users.getById(
-          //   existingAccount.userId.toString()
-          // )) as ActionResponse<IUserDoc>;
-
-          // if (!existingUser) return null;
-
-          // const isValidPassword = await bcrypt.compare(
-          //   password,
-          //   existingAccount.password!
-          // );
-
-          // if (isValidPassword) {
-          //   return {
-          //     id: existingAccount.userId.toString(),
-          //     name: existingUser.name,
-          //     email: existingUser.email,
-          //     image: existingUser.image,
-          //   };
-          // }
+          if (isValidPassword) {
+            return {
+              id: existingUser.id,
+              name: existingUser.name,
+              email: existingUser.email,
+              image: existingUser.image,
+            };
+          }
         }
+
         return null;
       },
     }),

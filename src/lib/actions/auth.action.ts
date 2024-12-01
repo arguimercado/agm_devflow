@@ -11,7 +11,8 @@ import { ActionResponse, ErrorResponse } from "@/types/global";
 
 import action from "../handlers/action";
 import handleError from "../handlers/error";
-import { SignUpSchema } from "../validation";
+import { NotFoundError } from "../https-errors";
+import { SignInSchema, SignUpSchema } from "../validation";
 
 export async function SignUpWithCredentials(
   params: AuthCredentials
@@ -77,19 +78,42 @@ async function checkUserExists(
   }
 }
 
-export async function SignUpWithCredentials2(
-  params: AuthCredentials
+export async function SignInWithCredentials(
+  params: Pick<AuthCredentials, "email" | "password">
 ): Promise<ActionResponse> {
-  const validationResult = await action({ params, schema: SignUpSchema });
+  const validationResult = await action({ params, schema: SignInSchema });
 
   if (validationResult instanceof Error) {
     return handleError(validationResult) as ErrorResponse;
   }
 
-  const { name, username, email, password } = validationResult.params!;
-
+  const { email, password } = validationResult.params!;
+  console.log("password", password);
   try {
-    await signIn("credentials", { email, password, redirect: false });
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      throw new NotFoundError("User");
+    }
+
+    const existingAccount = await Account.findOne({
+      provider: "credentials",
+      providerAccountId: email,
+    });
+    if (!existingAccount) {
+      throw new NotFoundError("Account");
+    }
+    console.log("existingAccount", existingAccount.password);
+
+    const passwordMatch = await bcrypt.compare(
+      password,
+      existingAccount.password
+    );
+
+    if (!passwordMatch) {
+      throw new Error("Invalid password");
+    }
+
+    signIn("credentials", { email, password, redirect: false });
 
     return { success: true };
   } catch (error) {
