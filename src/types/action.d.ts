@@ -1,4 +1,4 @@
-export interface SignInWithOAuthParams {
+interface SignInWithOAuthParams {
   provider: "github" | "google";
   providerAccountId: string;
   user: {
@@ -9,9 +9,15 @@ export interface SignInWithOAuthParams {
   };
 }
 
-export interface AuthCredentials {
+interface AuthCredentials {
   name: string;
   username: string;
   email: string;
   password: string;
+}
+
+interface CreateQuestionParams {
+  title: string;
+  content: string;
+  tags: string[];
 }

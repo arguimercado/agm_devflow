@@ -19,6 +19,7 @@ async function action<T>({
 }: ActionOptions<T>) {
   if (schema && params) {
     try {
+      console.log(params);
       schema.parse(params);
     } catch (error) {
       if (error instanceof ZodError) {
@@ -27,7 +28,7 @@ async function action<T>({
           error.flatten().fieldErrors as Record<string, string[]>
         );
       } else {
-        return new Error("Schema validation failed");
+        return new Error(`Schema validation failed ${error}`);
       }
     }
   }

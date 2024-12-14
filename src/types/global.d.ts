@@ -1,4 +1,4 @@
-import {NextResponse} from "next/server";
+import { NextResponse } from "next/server";
 
 interface TagProps {
   _id: string;
@@ -11,7 +11,7 @@ interface AuthorProps {
   image?: string;
 }
 
-export declare interface QuestionProps {
+interface QuestionProps {
   _id: string;
   title: string;
   description: string;
@@ -23,20 +23,24 @@ export declare interface QuestionProps {
   views: number;
 }
 
-
 type ActionResponse<T = null> = {
   success: boolean;
   data?: T;
   error?: {
     message: string;
     details?: Record<string, string[]>;
-  },
+  };
   statusCode?: number;
 };
 
-type SuccessResponse<T = null> = ActionResponse<T> & {success: true; }
+type SuccessResponse<T = null> = ActionResponse<T> & { success: true };
 
 type ErrorResponse = ActionResponse<T> & { success: false };
 
 type APIErrorResponse = NextResponse<ErrorResponse>;
 type APIResponse<T = null> = NextResponse<SuccessResponse<T>> | ErrorResponse;
+
+interface RouteParams {
+  params: Promise<Record<string, string>>;
+  searchParams: Promise<Record<string, string>>;
+}
