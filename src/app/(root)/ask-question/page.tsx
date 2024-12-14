@@ -7,6 +7,7 @@ import ROUTES from "@/constants/route";
 import { redirect } from "next/navigation";
 
 const AskQuestion = async () => {
+  
   const session = await auth();
   if (!session) return redirect(ROUTES.SIGNIN);
 

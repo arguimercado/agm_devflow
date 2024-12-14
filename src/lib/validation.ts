@@ -63,6 +63,10 @@ export const AskQuestionSchema = z.object({
     .max(3, { message: "You can add at most 3 tags." }),
 });
 
+export const EditQuestionSchema = AskQuestionSchema.extend({
+  questionId: z.string().min(1, { message: "Question ID is required." }),
+})
+
 export const UserSchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
   username: z
