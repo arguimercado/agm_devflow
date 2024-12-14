@@ -19,7 +19,6 @@ async function action<T>({
 }: ActionOptions<T>) {
   if (schema && params) {
     try {
-      console.log(params);
       schema.parse(params);
     } catch (error) {
       if (error instanceof ZodError) {

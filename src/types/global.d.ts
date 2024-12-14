@@ -14,7 +14,7 @@ interface AuthorProps {
 interface QuestionProps {
   _id: string;
   title: string;
-  description: string;
+  content: string;
   tags: TagProps[];
   author: AuthorProps;
   createdAt: Date;

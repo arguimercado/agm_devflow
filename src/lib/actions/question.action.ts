@@ -1,15 +1,19 @@
 "use server";
 
-import { ActionResponse, ErrorResponse, QuestionProps } from "@/types/global";
-import action from "../handlers/action";
-import { AskQuestionSchema, EditQuestionSchema } from "../validation";
-import handleError from "../handlers/error";
 import mongoose from "mongoose";
+
 import Question from "@/database/question.model";
-import Tag, { ITagDoc } from "@/database/tag.model";
 import TagQuestion from "@/database/tag-question.model";
-import logger from "../logger";
-import { NotFoundError, UnauthorizedError } from "../https-errors";
+import Tag, { ITagDoc } from "@/database/tag.model";
+
+import action from "../handlers/action";
+import handleError from "../handlers/error";
+import {
+  AskQuestionSchema,
+  EditQuestionSchema,
+  GetQuestionSchema,
+} from "../validation";
+import { ActionResponse, ErrorResponse, QuestionProps } from "@/types/global";
 
 export async function createQuestion(
   params: CreateQuestionParams
@@ -25,7 +29,7 @@ export async function createQuestion(
   }
 
   const { title, content, tags } = validationResult.params!;
-  const userId = validationResult.session?.user?.id;
+  const userId = validationResult?.session?.user?.id;
 
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -45,9 +49,7 @@ export async function createQuestion(
 
     for (const tag of tags) {
       const existingTag = await Tag.findOneAndUpdate(
-        {
-          name: { $regex: new RegExp(`^${tag}$`, "i") },
-        },
+        { name: { $regex: new RegExp(`^${tag}$`, "i") } },
         { $setOnInsert: { name: tag }, $inc: { questions: 1 } },
         { upsert: true, new: true, session }
       );
@@ -60,6 +62,7 @@ export async function createQuestion(
     }
 
     await TagQuestion.insertMany(tagQuestionDocuments, { session });
+
     await Question.findByIdAndUpdate(
       question._id,
       { $push: { tags: { $each: tagIds } } },
@@ -70,7 +73,6 @@ export async function createQuestion(
 
     return { success: true, data: JSON.parse(JSON.stringify(question)) };
   } catch (error) {
-    logger.error(error);
     await session.abortTransaction();
     return handleError(error) as ErrorResponse;
   } finally {
@@ -92,7 +94,7 @@ export async function editQuestion(
   }
 
   const { title, content, tags, questionId } = validationResult.params!;
-  const userId = validationResult.session?.user?.id;
+  const userId = validationResult?.session?.user?.id;
 
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -101,11 +103,11 @@ export async function editQuestion(
     const question = await Question.findById(questionId).populate("tags");
 
     if (!question) {
-      throw new NotFoundError("Question");
+      throw new Error("Question not found");
     }
 
     if (question.author.toString() !== userId) {
-      throw new UnauthorizedError("Unauthorized");
+      throw new Error("Unauthorized");
     }
 
     if (question.title !== title || question.content !== content) {
@@ -114,21 +116,29 @@ export async function editQuestion(
       await question.save({ session });
     }
 
-    const tagsToAdd = tags.filter(
-      (tag) => !question.tags.includes(tag.toLocaleLowerCase())
-    );
-    const tagsToRemove = question.tags.filter(
-      (tag: ITagDoc) => !tags.includes(tag.name.toLocaleLowerCase())
-    );
+    const tagsToAdd = tags.filter((tag) => {
+      console.log("tag:", tag);
+      console.log("question.tags:", question.tags);
+
+      //return tag which is not in question.tags
+      return !question.tags.some(
+        (tagDoc: ITagDoc) => tagDoc.name.toLowerCase() === tag.toLowerCase()
+      );
+    });
+
+    const tagsToRemove = question.tags.filter((tag: ITagDoc) => {
+      //return tag which is not in tags
+      return !tags.some(
+        (tagName) => tag.name.toLowerCase() === tagName.toLowerCase()
+      );
+    });
 
     const newTagDocuments = [];
 
     if (tagsToAdd.length > 0) {
       for (const tag of tagsToAdd) {
         const existingTag = await Tag.findOneAndUpdate(
-          {
-            name: { $regex: new RegExp(`^${tag}$`, "i") },
-          },
+          { name: { $regex: new RegExp(`^${tag}$`, "i") } },
           { $setOnInsert: { name: tag }, $inc: { questions: 1 } },
           { upsert: true, new: true, session }
         );
@@ -136,16 +146,17 @@ export async function editQuestion(
         if (existingTag) {
           newTagDocuments.push({
             tag: existingTag._id,
-            question: question._id,
+            question: questionId,
           });
-        }
 
-        question.tags.push(existingTag._id);
+          question.tags.push(existingTag._id);
+        }
       }
     }
 
     if (tagsToRemove.length > 0) {
       const tagIdsToRemove = tagsToRemove.map((tag: ITagDoc) => tag._id);
+
       await Tag.updateMany(
         { _id: { $in: tagIdsToRemove } },
         { $inc: { questions: -1 } },
@@ -153,12 +164,12 @@ export async function editQuestion(
       );
 
       await TagQuestion.deleteMany(
-        { tag: { $in: tagIdsToRemove } },
+        { tag: { $in: tagIdsToRemove }, question: questionId },
         { session }
       );
 
       question.tags = question.tags.filter(
-        (tagId: mongoose.Types.ObjectId) => !tagIdsToRemove.includes(tagId)
+        (tagId: mongoose.Types.ObjectId) => !tagsToRemove.includes(tagId)
       );
     }
 
@@ -171,10 +182,37 @@ export async function editQuestion(
 
     return { success: true, data: JSON.parse(JSON.stringify(question)) };
   } catch (error) {
-    logger.error(error);
     await session.abortTransaction();
     return handleError(error) as ErrorResponse;
   } finally {
-    session.endSession();
+    await session.endSession();
+  }
+}
+
+export async function getQuestion(
+  params: GetQuestionParams
+): Promise<ActionResponse<QuestionProps>> {
+  const validationResult = await action({
+    params,
+    schema: GetQuestionSchema,
+    authorize: true,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const { questionId } = validationResult.params!;
+
+  try {
+    const question = await Question.findById(questionId).populate("tags");
+
+    if (!question) {
+      throw new Error("Question not found");
+    }
+
+    return { success: true, data: JSON.parse(JSON.stringify(question)) };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
   }
 }
