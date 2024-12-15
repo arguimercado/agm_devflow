@@ -11,15 +11,7 @@ import { AskQuestionSchema } from "@/lib/validation";
 
 import TagCard from "../cards/TagCard";
 import { Button } from "../ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
+import { Form, FormField } from "../ui/form";
 import { Input } from "../ui/input";
 import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { toast } from "@/hooks/use-toast";
@@ -27,6 +19,7 @@ import { useRouter } from "next/navigation";
 import ROUTES from "@/constants/route";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { QuestionProps } from "@/types/global";
+import CustomFormItem from "../controls/CustomFormItem";
 
 // This is the only place InitializedMDXEditor is imported directly.
 const Editor = dynamic(() => import("@/components/editor"), {
@@ -146,23 +139,13 @@ const QuestionForm = ({ question, isEdit = false }: IProps) => {
           control={form.control}
           name="title"
           render={({ field }) => (
-            <FormItem className="flex w-full flex-col">
-              <FormLabel className="paragraph-medium text-dark400_light700">
-                Question Title <span className="text-primary-500">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  placeholder="Enter your question title"
-                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px] border"
-                />
-              </FormControl>
-              <FormDescription className="body-regular mt-2.5 text-light-500">
-                Be specific and imagine you’re asking a question to another
-                person
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+            <CustomFormItem
+              field={field}
+              label="Question Title"
+              placeholder="Enter your question title"
+              isRequired
+              formDescription="Be specific and imagine you’re asking a question to another person"
+            />
           )}
         />
 
@@ -170,24 +153,21 @@ const QuestionForm = ({ question, isEdit = false }: IProps) => {
           control={form.control}
           name="content"
           render={({ field }) => (
-            <FormItem className="flex w-full flex-col">
-              <FormLabel className="paragraph-medium text-dark400_light700">
-                Detailed explanation of your problem{" "}
-                <span className="text-primary-500">*</span>
-              </FormLabel>
-              <FormControl>
+            <CustomFormItem
+              field={field}
+              label="Detailed explanation of your problem"
+              placeholder="Introduce the problem you're experiencing, how you're trying to solve it, and what you've tried so far"
+              isRequired
+              formDescription="Introduce the problem you're experiencing, how you're trying to solve it, and what you've tried so far"
+            >
+              {(field) => (
                 <Editor
                   value={field.value}
                   editorRef={editorRef}
                   fieldChange={field.onChange}
                 />
-              </FormControl>
-              <FormDescription className="body-regular mt-2.5 text-light-500">
-                Introduce the problem you&apos;re experiencing, how you&apos;re
-                trying to solve it, and what you&apos;ve tried so far.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+              )}
+            </CustomFormItem>
           )}
         />
 
@@ -195,11 +175,14 @@ const QuestionForm = ({ question, isEdit = false }: IProps) => {
           control={form.control}
           name="tags"
           render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-3">
-              <FormLabel className="paragraph-medium text-dark400_light700">
-                Question Title <span className="text-primary-500">*</span>
-              </FormLabel>
-              <FormControl>
+            <CustomFormItem
+              field={field}
+              label="Tags"
+              isRequired
+              formDescription="Add up to 3 tags to describe what your question is about you need to press enter to add a tag"
+              placeholder="Add Tags"
+            >
+              {(field) => (
                 <div>
                   <Input
                     placeholder="Add Tags"
@@ -222,13 +205,8 @@ const QuestionForm = ({ question, isEdit = false }: IProps) => {
                     </div>
                   )}
                 </div>
-              </FormControl>
-              <FormDescription className="body-regular mt-2.5 text-light-500">
-                Add up to 3 tags to describe what your question is about you
-                need to press enter to add a tag
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+              )}
+            </CustomFormItem>
           )}
         />
 

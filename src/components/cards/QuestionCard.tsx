@@ -30,7 +30,7 @@ const QuestionCard = ({
         </div>
       </div>
 
-      <div className="mt-3.5 w-full flex-wrap gap-2">
+      <div className="mt-3.5 w-full flex flex-wrap gap-2">
         {tags.map((tag: TagProps) => (
           <TagCard key={tag._id} _id={tag._id} name={tag.name} compact />
         ))}
