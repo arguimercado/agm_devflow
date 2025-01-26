@@ -10,8 +10,9 @@ import { Input } from "../ui/input";
 interface SearchProps {
   icon: string;
   placeholder: string;
-  baseClassName: string;
+  baseClassName?: string;
   route: string;
+  iconPosition?: "left" | "right";
 }
 
 const LocalSearch = ({
@@ -19,6 +20,7 @@ const LocalSearch = ({
   placeholder,
   baseClassName,
   route,
+  iconPosition = "left",
 }: SearchProps) => {
   const pathname = usePathname();
   const router = useRouter();
@@ -56,13 +58,15 @@ const LocalSearch = ({
     <div
       className={`background-light800_darkgradient flex min-h-[56px] w-full grow items-center gap-4 rounded-[10px] px-4 ${baseClassName}`}
     >
-      <Image
-        src={icon}
-        alt="Search"
-        width={20}
-        height={20}
-        className="cursor-pointer"
-      />
+      {iconPosition === "left" && (
+        <Image
+          src={icon}
+          alt="Search"
+          width={20}
+          height={20}
+          className="cursor-pointer"
+        />
+      )}
 
       <Input
         type="text"
@@ -71,6 +75,16 @@ const LocalSearch = ({
         onChange={(e) => setSearchQuery(e.target.value)}
         className="paragraph-regular no-focus placeholder text-dark400_light700 border-none shadow-none outline-none"
       />
+
+      {iconPosition === "right" && (
+        <Image
+          src={icon}
+          alt="Search"
+          width={15}
+          height={15}
+          className="cursor-pointer"
+        />
+      )}
     </div>
   );
 };
