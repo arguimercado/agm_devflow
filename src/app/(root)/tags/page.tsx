@@ -3,11 +3,9 @@ import DataRenderer from "@/components/commons/DataRenderer";
 import LocalSearch from "@/components/search/LocalSearch";
 import ROUTES from "@/constants/route";
 import { EMPTY_TAGS } from "@/constants/state";
-import { ITagDoc } from "@/database/tag.model";
 import { getTags } from "@/lib/actions/tags.action";
 import { RouteParams } from "@/types/global";
 import React from "react";
-import { Tag } from "@/database";
 
 
 const TagsList = ({ tags }) => {
@@ -18,7 +16,7 @@ const TagsList = ({ tags }) => {
 
 
 const Tags = async ({ searchParams }: RouteParams) => {
-  
+
   const { page, pageSize, query, filter } = await searchParams;
 
   const { success, data, error } = await getTags({

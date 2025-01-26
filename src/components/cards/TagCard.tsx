@@ -6,7 +6,6 @@ import ROUTES from "@/constants/route";
 import { cn, getDevIconClassName, getTechDescription } from "@/lib/utils";
 
 import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
 
 interface IProps {
   _id: string;
