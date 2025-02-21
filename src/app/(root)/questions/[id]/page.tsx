@@ -4,6 +4,7 @@ import React from "react";
 import TagCard from "@/components/cards/TagCard";
 import Metric from "@/components/commons/Metric";
 import UserAvatar from "@/components/commons/UserAvatar";
+import Preview from "@/components/editor/preview";
 import ROUTES from "@/constants/route";
 import { formatNumber, getTimeStamp } from "@/lib/utils";
 import { RouteParams } from "@/types/global";
@@ -122,7 +123,7 @@ const QuestionDetails = ({ params }: RouteParams) => {
         />
       </div>
 
-      <p>Preview Content</p>
+      <Preview content={sampleQuestion.content} />
       <div className="mt-8 flex flex-wrap gap-2 ">
         {tags.map((tag) => (
           <TagCard
