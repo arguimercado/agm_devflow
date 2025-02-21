@@ -23,7 +23,6 @@ export const getTechDescription = (techName: string) => {
     : `${techName} is a popular tool for development.`;
 };
 
-
 export const getTimeStamp = (createdAt: Date) => {
   const date = new Date(createdAt);
   const now = new Date();
@@ -73,10 +72,19 @@ export const deleteSearchParams = (type: string) => {
   return newPathname;
 };
 
-
 export const getSkipLimit = (page: number, pageSize: number) => {
   const skip = (page - 1) * pageSize;
   const limit = pageSize;
 
   return { skip, limit };
-}
+};
+
+export const formatNumber = (number: number) => {
+  if (number <= 1000000) {
+    return (number / 1000).toFixed(1) + "M";
+  } else if (number >= 1000) {
+    return (number / 1000).toFixed(1) + "K";
+  } else {
+    return number.toString();
+  }
+};

@@ -16,7 +16,7 @@ const QuestionCard = ({
   question: { _id, title, tags, author, createdAt, upvotes, answers, views },
 }: QuestionCardProps) => {
   return (
-    <div className="card-wrapper rounded-[10px] p-9 sm:px-11 mb-4">
+    <div className="card-wrapper mb-4 rounded-[10px] p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
           <span className="subtle-regular text-dark400_light700 line-clamp-1  flex sm:hidden">
@@ -30,7 +30,7 @@ const QuestionCard = ({
         </div>
       </div>
 
-      <div className="mt-3.5 w-full flex flex-wrap gap-2">
+      <div className="mt-3.5 flex w-full flex-wrap gap-2">
         {tags.map((tag: TagProps) => (
           <TagCard key={tag._id} _id={tag._id} name={tag.name} compact />
         ))}
@@ -44,6 +44,7 @@ const QuestionCard = ({
           href={ROUTES.PROFILE(author._id)}
           textStyles="body-medium text-dark400_light700"
           isAuthor
+          titleStyles="max-sm:hidden"
         />
 
         <div className="flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start">
