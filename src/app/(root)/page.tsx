@@ -1,21 +1,20 @@
 import Link from "next/link";
 
 import QuestionCard from "@/components/cards/QuestionCard";
+import DataRenderer from "@/components/commons/DataRenderer";
 import HomeFilter from "@/components/filter/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
-import { questions } from "@/constants/data";
 import ROUTES from "@/constants/route";
-import { getQuestions } from "@/lib/actions/question.action";
-import DataRenderer from "@/components/commons/DataRenderer";
 import { EMPTY_QUESTION } from "@/constants/state";
-import { IQuestionDoc } from "@/database/question.model";
+import { getQuestions } from "@/lib/actions/question.action";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
 const Home = async ({ searchParams }: SearchParams) => {
+  
   const { page, pageSize, query, filter } = await searchParams;
 
   const { success, data, error } = await getQuestions({
@@ -52,8 +51,7 @@ const Home = async ({ searchParams }: SearchParams) => {
           placeholder="Search for questions"
           baseClassName="flex-1"
           iconPosition="left"
-          route="/"
-        />
+          route="/" />
       </section>
       <HomeFilter />
       <div className="mt-10 flex w-full flex-col gap-6">

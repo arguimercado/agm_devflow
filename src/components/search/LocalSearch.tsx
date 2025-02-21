@@ -28,6 +28,7 @@ const LocalSearch = ({
   const query = searchParams.get("query") || "";
 
   const [searchQuery, setSearchQuery] = useState(query);
+  console.log(searchQuery);
 
   useEffect(() => {
     const debounceFn = setTimeout(() => {
@@ -40,14 +41,12 @@ const LocalSearch = ({
 
         router.push(newUrl, { scroll: false });
       } else {
-        if (pathname === route) {
-          const newUrl = removeKeysFromUrlQuery({
-            params: searchParams.toString(),
-            keysToRemove: ["query"],
-          });
+        const newUrl = removeKeysFromUrlQuery({
+          params: searchParams.toString(),
+          keysToRemove: ["query"],
+        });
 
-          router.push(newUrl, { scroll: false });
-        }
+        router.push(newUrl, { scroll: false });
       }
     }, 1000);
 

@@ -72,3 +72,11 @@ export const deleteSearchParams = (type: string) => {
 
   return newPathname;
 };
+
+
+export const getSkipLimit = (page: number, pageSize: number) => {
+  const skip = (page - 1) * pageSize;
+  const limit = pageSize;
+
+  return { skip, limit };
+}

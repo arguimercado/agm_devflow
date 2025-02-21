@@ -8,11 +8,7 @@ import { RouteParams } from "@/types/global";
 import React from "react";
 
 
-const TagsList = ({ tags }) => {
-  return(
-    <div></div>
-  )
-});
+
 
 
 const Tags = async ({ searchParams }: RouteParams) => {
