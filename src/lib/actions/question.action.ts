@@ -5,6 +5,17 @@ import mongoose, { FilterQuery } from "mongoose";
 import Question, { IQuestionDoc } from "@/database/question.model";
 import TagQuestion from "@/database/tag-question.model";
 import Tag, { ITagDoc } from "@/database/tag.model";
+import {
+  CreateQuestionParams,
+  EditQuestionParams,
+  GetQuestionParams,
+} from "@/types/action";
+import {
+  ActionResponse,
+  ErrorResponse,
+  PaginatedSearchParams,
+  QuestionProps,
+} from "@/types/global";
 
 import action from "../handlers/action";
 import handleError from "../handlers/error";
@@ -14,12 +25,6 @@ import {
   GetQuestionSchema,
   PaginatedSearchParamsSchema,
 } from "../validation";
-import {
-  ActionResponse,
-  ErrorResponse,
-  PaginatedSearchParams,
-  QuestionProps,
-} from "@/types/global";
 
 export async function createQuestion(
   params: CreateQuestionParams
@@ -129,9 +134,9 @@ export async function editQuestion(
         )
     );
 
-    //removing
+    // removing
     const tagsToRemove = question.tags.filter((tagDoc: ITagDoc) => {
-      //return tag which is not in tags
+      // return tag which is not in tags
       return !tags.some(
         (tagName) => tagDoc.name.toLowerCase() === tagName.toLowerCase()
       );
@@ -201,8 +206,9 @@ export async function getQuestion(
   const validationResult = await action({
     params,
     schema: GetQuestionSchema,
-    authorize: true,
+    authorize: false,
   });
+  console.log("validationResult", validationResult);
 
   if (validationResult instanceof Error) {
     return handleError(validationResult) as ErrorResponse;
@@ -211,7 +217,9 @@ export async function getQuestion(
   const { questionId } = validationResult.params!;
 
   try {
-    const question = await Question.findById(questionId).populate("tags");
+    const question = await Question.findById(questionId)
+      .populate("tags")
+      .populate("author", "_id name image");
 
     if (!question) {
       throw new Error("Question not found");

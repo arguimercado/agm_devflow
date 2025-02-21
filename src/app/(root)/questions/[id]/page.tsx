@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
 
 import TagCard from "@/components/cards/TagCard";
@@ -6,6 +7,7 @@ import Metric from "@/components/commons/Metric";
 import UserAvatar from "@/components/commons/UserAvatar";
 import Preview from "@/components/editor/preview";
 import ROUTES from "@/constants/route";
+import { getQuestion } from "@/lib/actions/question.action";
 import { formatNumber, getTimeStamp } from "@/lib/utils";
 import { RouteParams } from "@/types/global";
 
@@ -77,9 +79,13 @@ Looking forward to your suggestions and examples!
   },
 };
 
-const QuestionDetails = ({ params }: RouteParams) => {
-  const { id } = params;
-  const { author, createdAt, answers, views, tags } = sampleQuestion;
+const QuestionDetails = async ({ params }: RouteParams) => {
+  const { id } = await params;
+
+  const { success, data: question } = await getQuestion({ questionId: id });
+  console.log(question);
+  // if (!success || !question) return redirect("/404");
+  const { author, createdAt, answers, views, tags, title, content } = question;
 
   return (
     <>
@@ -103,7 +109,7 @@ const QuestionDetails = ({ params }: RouteParams) => {
           </div>
         </div>
         <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full">
-          {sampleQuestion.title}
+          {title}
         </h2>
       </div>
       <div className="mb-8 mt-5 flex flex-wrap gap-4">
@@ -123,7 +129,7 @@ const QuestionDetails = ({ params }: RouteParams) => {
         />
       </div>
 
-      <Preview content={sampleQuestion.content} />
+      <Preview content={content} />
       <div className="mt-8 flex flex-wrap gap-2 ">
         {tags.map((tag) => (
           <TagCard
